@@ -1,0 +1,51 @@
+.symptom-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.symptom-selector input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+
+.selected-symptoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.symptom-tag {
+  background-color: var(--light-color);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.symptom-tag button {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.symptom-suggestions {
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.symptom-option {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.symptom-option:hover {
+  background-color: #f0f0f0;
+}

@@ -1,0 +1,52 @@
+.results-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.results-visualization {
+  display: flex;
+  gap: 2rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.chart-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.image-result {
+  flex: 1;
+  min-width: 300px;
+}
+
+.result-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.results-details {
+  margin-top: 1.5rem;
+}
+
+.primary-diagnosis {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  margin: 0.5rem 0 1rem;
+}
+
+.recommendations {
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.recommendations li {
+  margin-bottom: 0.5rem;
+}

@@ -1,0 +1,38 @@
+.breast-health-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.image-comparison {
+  display: flex;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.image-comparison > div {
+  flex: 1;
+}
+
+.image-comparison img {
+  width: 100%;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.result-item {
+  margin-bottom: 1.5rem;
+}
+
+.result-item h4 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.result-item ul {
+  margin-left: 1.5rem;
+}
+
+.result-item li {
+  margin-bottom: 0.5rem;
+}

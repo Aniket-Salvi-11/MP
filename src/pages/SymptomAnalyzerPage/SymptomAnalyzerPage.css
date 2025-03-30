@@ -1,0 +1,32 @@
+.symptom-analyzer-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.analysis-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.result-item {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-top: 1rem;
+}
+
+.result-item h4 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.result-item ul {
+  margin-left: 1.5rem;
+}
+
+.result-item li {
+  margin-bottom: 0.5rem;
+}

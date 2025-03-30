@@ -1,0 +1,23 @@
+.fracture-detection-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.results-container {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-top: 2rem;
+}
+
+.results-container h3 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.result-item p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}

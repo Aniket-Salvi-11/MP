@@ -1,0 +1,42 @@
+.history-item {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--box-shadow);
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.history-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.history-content {
+  display: flex;
+  gap: 2rem;
+}
+
+.history-image {
+  flex: 0 0 200px;
+}
+
+.history-image img {
+  border-radius: var(--border-radius);
+}
+
+.history-results {
+  flex: 1;
+}
+
+.history-results p {
+  margin-bottom: 0.5rem;
+}

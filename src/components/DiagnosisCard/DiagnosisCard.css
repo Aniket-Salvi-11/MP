@@ -1,0 +1,17 @@
+.diagnosis-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 2rem;
+}
+
+.diagnosis-card h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.diagnosis-card p {
+  color: #666;
+  font-size: 1.1rem;
+}
