@@ -1,52 +1,86 @@
-.results-container {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+.analysis-results {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
 }
 
-.results-visualization {
-  display: flex;
-  gap: 2rem;
-  margin: 1.5rem 0;
-  flex-wrap: wrap;
+.results-title {
+  color: var(--primary);
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-xl);
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: var(--space-sm);
 }
 
-.chart-container {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-}
-
-.image-result {
-  flex: 1;
-  min-width: 300px;
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
 }
 
 .result-image {
   width: 100%;
-  max-width: 400px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
-.results-details {
-  margin-top: 1.5rem;
+.result-item {
+  margin-bottom: var(--space-lg);
 }
 
-.primary-diagnosis {
-  font-size: 1.2rem;
-  color: var(--primary-color);
-  font-weight: bold;
-  margin: 0.5rem 0 1rem;
+.result-item h4 {
+  color: var(--dark);
+  margin-bottom: var(--space-sm);
+}
+
+.conditions-list {
+  list-style: none;
+  padding: 0;
+}
+
+.conditions-list li {
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.severity-high {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.severity-medium {
+  color: var(--warning);
+  font-weight: 500;
+}
+
+.severity-low {
+  color: var(--success);
+  font-weight: 500;
 }
 
 .recommendations {
-  margin-left: 1.5rem;
-  margin-top: 0.5rem;
+  background-color: #f8fafc;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-lg);
+}
+
+.recommendations h4 {
+  color: var(--primary);
+  margin-bottom: var(--space-sm);
+}
+
+.recommendations ul {
+  padding-left: var(--space-md);
 }
 
 .recommendations li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-xs);
+}
+
+@media (max-width: 768px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -3,19 +3,14 @@ import AppHeader from '../../components/AppHeader/AppHeader';
 import AppFooter from '../../components/AppFooter/AppFooter';
 import './MainLayout.css';
 
-console.log("AppHeader:", AppHeader);
-console.log("AppFooter:", AppFooter);
-
-const MainLayout = ({ children }) => {
+export default function MainLayout({ children }) {
   return (
-    <div className="app-container">
+    <div className="app-layout">
       <AppHeader />
-      <main className="main-content">
+      <main className="app-main">
         {children}
       </main>
       <AppFooter />
-    </div> 
+    </div>
   );
-};
-
-export default MainLayout;
+}

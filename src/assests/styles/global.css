@@ -1,40 +1,66 @@
 :root {
-  --primary-color: #4a6fa5;
-  --secondary-color: #6b8cae;
-  --accent-color: #ff7e5f;
-  --light-color: #f8f9fa;
-  --dark-color: #343a40;
-  --success-color: #28a745;
-  --warning-color: #ffc107;
-  --danger-color: #dc3545;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* Color System */
+  --primary-50: #f0f9ff;
+  --primary-100: #e0f2fe;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-500: #64748b;
+  
+  --success-500: #10b981;
+  --warning-500: #f59e0b;
+  --danger-500: #ef4444;
+  
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* Typography */
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  
+  /* Borders */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Utility Classes */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
 }
 
-body {
-  background-color: #f5f7fa;
-  color: #333;
-  line-height: 1.6;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary-color);
+.btn-primary {
+  background-color: var(--primary-500);
+  color: white;
 }
 
-button {
-  cursor: pointer;
-  transition: all 0.3s ease;
+.btn-primary:hover {
+  background-color: var(--primary-600);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
+/* Add more utility classes as needed */

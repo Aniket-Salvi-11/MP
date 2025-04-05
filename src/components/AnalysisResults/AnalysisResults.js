@@ -1,72 +1,57 @@
 import React from 'react';
-import { Pie } from 'react-chartjs-2';
 import './AnalysisResults.css';
 
-const AnalysisResults = ({ results, type }) => {
-  const renderSkinResults = () => {
-    const data = {
-      labels: results.conditions.map(c => c.name),
-      datasets: [{
-        data: results.conditions.map(c => c.confidence * 100),
-        backgroundColor: [
-          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
-        ]
-      }]
-    };
+export default function AnalysisResults({ results, type }) {
+  const getSeverityClass = (confidence) => {
+    if (confidence > 70) return 'severity-high';
+    if (confidence > 40) return 'severity-medium';
+    return 'severity-low';
+  };
 
-    return (
-      <div className="results-container">
-        <h3>Analysis Results</h3>
+  return (
+    <div className="analysis-results fade-in">
+      <h3 className="results-title">Analysis Results</h3>
+      
+      <div className="results-grid">
         <div className="results-visualization">
-          <div className="chart-container">
-            <Pie 
-              data={data}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: { position: 'right' },
-                  tooltip: {
-                    callbacks: {
-                      label: (context) => `${context.label}: ${context.raw.toFixed(1)}%`
-                    }
-                  }
-                }
-              }}
-            />
-          </div>
           {results.visualization && (
-            <div className="image-result">
-              <img 
-                src={`data:image/png;base64,${results.visualization}`} 
-                alt="Analysis Visualization"
-                className="result-image"
-              />
-            </div>
+            <img 
+              src={`data:image/png;base64,${results.visualization}`} 
+              alt="Analysis visualization"
+              className="result-image"
+            />
           )}
         </div>
         
         <div className="results-details">
-          <h4>Most Likely Condition:</h4>
-          <p className="primary-diagnosis">
-            {results.conditions[0].name} ({Math.round(results.conditions[0].confidence * 100)}% confidence)
-          </p>
+          <div className="result-item">
+            <h4>Primary Diagnosis</h4>
+            <p className={getSeverityClass(results.conditions[0].confidence)}>
+              {results.conditions[0].name} ({Math.round(results.conditions[0].confidence * 100)}% confidence)
+            </p>
+          </div>
           
-          <h4>Recommendations:</h4>
-          <ul className="recommendations">
-            <li>Consult with a dermatologist for confirmation</li>
-            <li>Monitor for any changes in the affected area</li>
-            <li>Avoid scratching or irritating the area</li>
-          </ul>
+          <div className="result-item">
+            <h4>Other Possible Conditions</h4>
+            <ul className="conditions-list">
+              {results.conditions.slice(1).map((condition, index) => (
+                <li key={index} className={getSeverityClass(condition.confidence)}>
+                  {condition.name} ({Math.round(condition.confidence * 100)}%)
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    );
-  };
-
-  return (
-    <div className="analysis-results">
-      {type === 'skin' && renderSkinResults()}
+      
+      <div className="recommendations">
+        <h4>Recommendations</h4>
+        <ul>
+          {results.recommendations.map((rec, index) => (
+            <li key={index}>{rec}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
-};
-
-export default AnalysisResults;
+}

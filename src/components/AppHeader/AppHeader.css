@@ -1,0 +1,61 @@
+.app-header {
+    background-color: white;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--space-sm) 0;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  .logo-icon {
+    font-size: var(--text-2xl);
+  }
+  
+  .logo h1 {
+    font-size: var(--text-xl);
+    color: var(--primary);
+    margin: 0;
+  }
+  
+  .nav-menu {
+    display: flex;
+    gap: var(--space-lg);
+  }
+  
+  .nav-link {
+    color: var(--dark);
+    font-weight: 500;
+    padding: var(--space-xs) 0;
+    position: relative;
+  }
+  
+  .nav-link:hover {
+    color: var(--primary);
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
