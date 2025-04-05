@@ -1,43 +1,76 @@
-import axios from 'axios';
+const API_BASE_URL = 'http://localhost:5000/api';
 
-const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
-  timeout: 30000,
-});
-
-// Image Analysis Endpoints
-export const analyzeSkinImage = async (imageFile) => {
-  const formData = new FormData();
-  formData.append('image', imageFile);
-  const response = await api.post('/skin-analysis', formData);
-  return response.data;
+export const analyzeSymptoms = async (symptoms, patientInfo) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/analyze/symptoms`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        symptoms,
+        patient_info: patientInfo
+      }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error analyzing symptoms:', error);
+    throw error;
+  }
 };
 
-export const analyzeBreastImage = async (imageFile) => {
-  const formData = new FormData();
-  formData.append('image', imageFile);
-  const response = await api.post('/breast-analysis', formData);
-  return response.data;
+export const analyzeMedicalImage = async (file, analysisType) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', analysisType);
+
+    const response = await fetch(`${API_BASE_URL}/analyze/image`, {
+      method: 'POST',
+      body: formData,
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error analyzing image:', error);
+    throw error;
+  }
 };
 
-export const analyzeLungImage = async (imageFile) => {
-  const formData = new FormData();
-  formData.append('image', imageFile);
-  const response = await api.post('/lung-analysis', formData);
-  return response.data;
+export const getPatientHistory = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/history`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching patient history:', error);
+    throw error;
+  }
 };
 
-export const analyzeFracture = async (imageFile) => {
-  const formData = new FormData();
-  formData.append('image', imageFile);
-  const response = await api.post('/fracture-analysis', formData);
-  return response.data;
+export const saveDiagnosis = async (diagnosisData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/history`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(diagnosisData),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error saving diagnosis:', error);
+    throw error;
+  }
 };
 
-// Symptom Analysis Endpoint
-export const analyzeSymptoms = async (symptoms) => {
-  const response = await api.post('/symptom-analysis', { symptoms });
-  return response.data;
-};
+// Add these specialized analysis functions
+export const analyzeBreastImage = (file) => 
+  analyzeMedicalImage(file, 'breast');
 
-export default api;
+export const analyzeFracture = (file) =>
+  analyzeMedicalImage(file, 'fracture');
+
+export const analyzeLungImage = (file) =>
+  analyzeMedicalImage(file, 'lung');
+
+export const analyzeSkinImage = (file) =>
+  analyzeMedicalImage(file, 'skin');

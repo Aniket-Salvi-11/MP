@@ -1,54 +1,101 @@
-import React, { createContext, useState, useCallback } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { 
+  analyzeSymptoms, 
+  analyzeMedicalImage,
+  getPatientHistory,
+  saveDiagnosis
+} from '../services/api';
 
-export const DiagnosticContext = createContext();
+const DiagnosticContext = createContext();
 
-export function DiagnosticProvider({ children }) {
-  const [patientHistory, setPatientHistory] = useState(() => {
-    const saved = localStorage.getItem('patientHistory');
-    return saved ? JSON.parse(saved) : [];
-  });
-  
-  const [currentDiagnosis, setCurrentDiagnosis] = useState(null);
+export const DiagnosticProvider = ({ children }) => {
+  const [diagnoses, setDiagnoses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const addToHistory = useCallback((diagnosis) => {
-    const entry = {
-      ...diagnosis,
-      id: uuidv4(),
-      date: new Date().toISOString(),
-      viewed: false
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        setIsLoading(true);
+        const { history } = await getPatientHistory();
+        setDiagnoses(history);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    
-    setPatientHistory(prev => {
-      const updated = [entry, ...prev];
-      localStorage.setItem('patientHistory', JSON.stringify(updated));
-      return updated;
-    });
+    fetchHistory();
   }, []);
 
-  const value = {
-    patientHistory,
-    currentDiagnosis,
-    isLoading,
-    error,
-    addToHistory,
-    setIsLoading,
-    setError
+  const addDiagnosis = async (diagnosis) => {
+    try {
+      setIsLoading(true);
+      const result = await saveDiagnosis(diagnosis);
+      setDiagnoses(prev => [result, ...prev]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const analyzeSymptoms = async (symptoms, patientInfo) => {
+    try {
+      setIsLoading(true);
+      const result = await analyzeSymptoms(symptoms, patientInfo);
+      await addDiagnosis({
+        ...result,
+        type: 'symptoms',
+        timestamp: new Date().toISOString()
+      });
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const analyzeImage = async (file, analysisType) => {
+    try {
+      setIsLoading(true);
+      const result = await analyzeMedicalImage(file, analysisType);
+      await addDiagnosis({
+        ...result,
+        type: 'image',
+        timestamp: new Date().toISOString()
+      });
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <DiagnosticContext.Provider value={value}>
+    <DiagnosticContext.Provider
+      value={{
+        diagnoses,
+        isLoading,
+        error,
+        analyzeSymptoms,
+        analyzeImage,
+        addDiagnosis
+      }}
+    >
       {children}
     </DiagnosticContext.Provider>
   );
-}
+};
 
-export function useDiagnostic() {
-  const context = React.useContext(DiagnosticContext);
+export const useDiagnostic = () => {
+  const context = useContext(DiagnosticContext);
   if (!context) {
     throw new Error('useDiagnostic must be used within a DiagnosticProvider');
   }
   return context;
-}
+};

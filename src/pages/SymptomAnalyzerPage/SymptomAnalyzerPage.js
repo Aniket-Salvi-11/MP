@@ -1,84 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDiagnostic } from '../../context/DiagnosticContext';
-import DiagnosisCard from '../../components/DiagnosisCard/DiagnosisCard';
 import SymptomSelector from '../../components/SymptomSelector/SymptomSelector';
-import { analyzeSymptoms } from '../../services/api';
-import './SymptomAnalyzerPage.css';
+import AnalysisResults from '../../components/AnalysisResults/AnalysisResults';
 
 const SymptomAnalyzerPage = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+  const [patientInfo, setPatientInfo] = useState({
+    age: '',
+    gender: '',
+    medicalHistory: ''
+  });
+  const { analyzeSymptoms, isLoading, error } = useDiagnostic();
   const [results, setResults] = useState(null);
-  const { isLoading, setIsLoading, addToHistory } = useDiagnostic();
 
   const handleAnalyze = async () => {
-    if (selectedSymptoms.length === 0) return;
-    
-    setIsLoading(true);
     try {
-      const analysisResults = await analyzeSymptoms(selectedSymptoms);
+      const analysisResults = await analyzeSymptoms(selectedSymptoms, patientInfo);
       setResults(analysisResults);
-      addToHistory({
-        type: 'symptoms',
-        symptoms: selectedSymptoms,
-        results: analysisResults,
-        date: new Date().toLocaleString()
-      });
-    } catch (error) {
-      console.error("Analysis failed:", error);
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      console.error('Analysis failed:', err);
     }
   };
 
   return (
-    <div className="diagnosis-page">
-      <DiagnosisCard 
-        title="Symptom Analyzer"
-        description="Select your symptoms to get potential diagnoses"
+    <div className="symptom-analyzer-page">
+      <h2>Symptom Analyzer</h2>
+      
+      <div className="patient-info-form">
+        {/* Add patient info form fields here */}
+      </div>
+      
+      <SymptomSelector 
+        selectedSymptoms={selectedSymptoms}
+        onSelect={setSelectedSymptoms}
       />
       
-      <div className="analysis-container">
-        <SymptomSelector 
-          selectedSymptoms={selectedSymptoms}
-          setSelectedSymptoms={setSelectedSymptoms}
-        />
-        
-        <button 
-          onClick={handleAnalyze}
-          disabled={selectedSymptoms.length === 0 || isLoading}
-          className="primary-button"
-        >
-          {isLoading ? 'Analyzing...' : 'Analyze Symptoms'}
-        </button>
-        
-        {results && (
-          <div className="results-container">
-            <h3>Analysis Results</h3>
-            <div className="result-item">
-              <h4>Most Likely Condition:</h4>
-              <p>{results.primaryDiagnosis} ({results.confidence}% confidence)</p>
-            </div>
-            
-            <div className="result-item">
-              <h4>Other Possible Conditions:</h4>
-              <ul>
-                {results.secondaryDiagnoses.map((diagnosis, index) => (
-                  <li key={index}>{diagnosis.name} ({diagnosis.confidence}%)</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="result-item">
-              <h4>Recommended Actions:</h4>
-              <ul>
-                {results.recommendations.map((rec, index) => (
-                  <li key={index}>{rec}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+      <button 
+        onClick={handleAnalyze}
+        disabled={isLoading || selectedSymptoms.length === 0}
+      >
+        {isLoading ? 'Analyzing...' : 'Analyze Symptoms'}
+      </button>
+      
+      {error && <div className="error-message">{error}</div>}
+      {results && <AnalysisResults results={results} />}
     </div>
   );
 };

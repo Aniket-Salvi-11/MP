@@ -1,69 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useDiagnostic } from '../../context/DiagnosticContext';
 import './ImageUploader.css';
 
-export default function ImageUploader({ image, setImage }) {
-  const [dragActive, setDragActive] = useState(false);
+const ImageUploader = ({ analysisType }) => {
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const { analyzeImage, isLoading, error } = useDiagnostic();
+  const [results, setResults] = useState(null);
 
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
     }
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setImage(e.dataTransfer.files[0]);
+  const handleUpload = async () => {
+    try {
+      const analysisResults = await analyzeImage(file, analysisType);
+      setResults(analysisResults);
+    } catch (err) {
+      console.error('Image analysis failed:', err);
     }
   };
 
   return (
     <div className="image-uploader">
-      <div 
-        className={`upload-area ${dragActive ? 'active' : ''}`}
-        onDragEnter={handleDrag}
-        onDragLeave={handleDrag}
-        onDragOver={handleDrag}
-        onDrop={handleDrop}
-      >
-        <input 
-          type="file" 
-          id="image-upload"
-          onChange={(e) => setImage(e.target.files[0])}
-          accept="image/*"
-          className="upload-input"
-        />
-        <label htmlFor="image-upload" className="upload-label">
-          {image ? (
-            <>
-              <span className="upload-icon">🖼️</span>
-              <p>Click or drag to replace image</p>
-            </>
-          ) : (
-            <>
-              <span className="upload-icon">📤</span>
-              <p>Drag & drop your image here</p>
-              <p className="upload-hint">or click to browse files</p>
-            </>
-          )}
-        </label>
-      </div>
+      <h3>Upload {analysisType === 'skin' ? 'Skin' : 'X-ray'} Image</h3>
       
-      {image && (
+      <input 
+        type="file" 
+        onChange={handleFileChange}
+        accept="image/*"
+        disabled={isLoading}
+      />
+      
+      {preview && (
         <div className="image-preview">
-          <img 
-            src={URL.createObjectURL(image)} 
-            alt="Preview" 
-            className="preview-image"
-          />
+          <img src={preview} alt="Preview" />
+        </div>
+      )}
+      
+      <button 
+        onClick={handleUpload}
+        disabled={isLoading || !file}
+      >
+        {isLoading ? 'Analyzing...' : 'Analyze Image'}
+      </button>
+      
+      {error && <div className="error-message">{error}</div>}
+      {results && (
+        <div className="analysis-results">
+          <h4>Results:</h4>
+          <pre>{JSON.stringify(results, null, 2)}</pre>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default ImageUploader;
